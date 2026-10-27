@@ -1,0 +1,37 @@
+name: Manual QA build and emulator smoke
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      BLOODSKY_ORIGINAL_APK: ${{ github.workspace }}/.cache/original.apk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: android-actions/setup-android@v3
+      - run: sdkmanager 'build-tools;35.0.0' 'platform-tools'
+      - run: bash tools/fetch_pinned_original.sh
+      - run: bash tools/build_candidate.sh
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          script: bash tests/emulator_smoke.sh
+      - if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BLOODSKY-Craft107-EXPERIMENTAL-QA
+          path: |
+            out/BLOODSKY-QA.apk
+            out/signature-check.txt
+            out/sha256.txt
+            out/emulator/
+          retention-days: 3

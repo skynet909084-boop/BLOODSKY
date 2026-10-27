@@ -1,0 +1,3 @@
+# Experimental QA build
+
+This project reconstructs the signed QA APK from a SHA-256 pinned original, without uploading original APKs or keystore secrets into Git history. Run the manual `build-qa.yml` workflow or set `BLOODSKY_ORIGINAL_APK` to the original path and run `bash tools/build_candidate.sh` with Android SDK 35 build-tools, Java and Python installed. New ephemeral QA key generated per build. The resulting APK is only for experimental validation. A valid production release requires a stable private signing key, complete Cloud isolation audit, verified project saving, and real Android hardware acceptance.
