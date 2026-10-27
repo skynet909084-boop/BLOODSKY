@@ -40,7 +40,7 @@ def patch(data, target_ids):
    if rid in target_ids:
     assert not existing,(hex(rid),'already visibility')
     assert len(raw)==ext+astart+asz*acount,(hex(rid),'unexpected tail',len(raw),ext+astart+asz*acount)
-    attr=pack32(nsidx)+pack32(visidx)+pack32(0xffffffff)+pack16(8)+bytes([0,0x10])+pack32(8)
+    attr=pack32(nsidx)+pack32(visidx)+pack32(0xffffffff)+pack16(8)+bytes([0,0x10])+pack32(2)
     assert len(attr)==20 and asz==20
     # Android binary XML attribute entries must be ordered by resource ID.
     # Appending visibility after layout attributes leaves it ignored on API 30.
