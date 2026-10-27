@@ -18,7 +18,7 @@ BLOODSKY — рабочий проект по адаптации Android-при�
 
 Недостаточно проверены: сохранение проектов с размещёнными виджетами, выполнение схем FBD, импорт/экспорт, все остаточные облачные вызовы, реальные Wi-Fi/USB/Bluetooth/Modbus-подключения, совместимость с новыми версиями Android, права на распространение базовых ресурсов и постоянная релизная подпись.
 
-Последние подтверждённые проверки: [Android QA](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40553232969), [визуальная сверка](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40553233451), [панель HMI](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40555577752), [панель FBD](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40556295416).
+Последние подтверждённые проверки: [Android QA](https://github.com/skynet909084-boop/BLOODSKY/actions/runs/40553232969), [визуальная сверка](https://github.com/skynet909084-boop/BLOODSKY/actions/runs/40553233451), [панель HMI](https://github.com/skynet909084-boop/BLOODSKY/actions/runs/40555577752), [панель FBD](https://github.com/skynet909084-boop/BLOODSKY/actions/runs/40556295416).
 
 ## Что входит в репозиторий
 
