@@ -37,9 +37,27 @@ missing=needed-ids
 assert not missing, f'Original palette controls absent: {sorted(missing)}; observed={sorted(ids)}'
 print('PASS: Original HMI palette contains setter, text, and indicator controls')
 PY
+# Toggle original component palette to FBD / logic components (from source fragment_component_logic_bar.xml).
+xy="$(python3 tests/find_ui_node.py "$OUT/ui.xml" --resource-id "$PACKAGE:id/switch_layout")"
+adb shell input tap $xy
+sleep 3
+timeout 30 adb shell uiautomator dump /sdcard/bloodsky-logic-palette.xml > "$OUT/logic-uiautomator.txt"
+adb pull /sdcard/bloodsky-logic-palette.xml "$OUT/logic-ui.xml" > /dev/null
+adb shell screencap -p /sdcard/bloodsky-logic-palette.png
+adb pull /sdcard/bloodsky-logic-palette.png "$OUT/logic-screen.png" > /dev/null
+test -s "$OUT/logic-ui.xml" && test -s "$OUT/logic-screen.png"
+python3 - "$OUT/logic-ui.xml" <<'PY'
+import sys,xml.etree.ElementTree as ET
+root=ET.parse(sys.argv[1]).getroot()
+ids={n.attrib.get('resource-id','').split('/')[-1] for n in root.iter('node')}
+needed={'tab_var', 'tab_fb_rs', 'tab_fb_timer'}
+missing=needed-ids
+assert not missing,f'Original FBD palette missing: {sorted(missing)}; ids={sorted(ids)}'
+print('PASS: FBD palette shows original variable, RS and timer components')
+PY
 if grep -A 12 'FATAL EXCEPTION' "$OUT/runtime-errors.txt" | grep -q "$PACKAGE"; then
   echo 'App crash after opening component palette' >&2
   exit 1
 fi
 trap - EXIT
-echo 'PASS: HMI component palette opens in original editor; insert/save behavior still needs testing.'
+echo 'PASS: HMI and FBD component palettes open in original editor; insert/save behavior still needs testing.'
