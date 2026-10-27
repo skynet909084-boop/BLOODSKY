@@ -7,12 +7,14 @@ p.add_argument('xml')
 p.add_argument('--resource-id')
 p.add_argument('--class-name')
 p.add_argument('--text')
+p.add_argument('--text-contains')
 args=p.parse_args()
 root=ET.parse(args.xml).getroot()
 for node in root.iter('node'):
  if args.resource_id and node.get('resource-id')!=args.resource_id:continue
  if args.class_name and node.get('class')!=args.class_name:continue
  if args.text and node.get('text')!=args.text:continue
+ if args.text_contains and args.text_contains not in (node.get('text') or ''):continue
  m=re.fullmatch(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]',node.get('bounds',''))
  if not m:continue
  a,b,c,d=map(int,m.groups())
