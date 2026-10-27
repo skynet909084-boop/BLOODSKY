@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Fixed-size method body changes in original Dex; does not rebuild resource XML."""
 import hashlib, struct, zlib, zipfile, pathlib, argparse, json, os
-APK=pathlib.Path(os.environ.get('BLOODSKY_ORIGINAL_APK','/mnt/data/KaScada Smart Craft 1.0.7 (08.02.2026)(1).apk'))
-OUT=pathlib.Path(os.environ.get('BLOODSKY_UNSIGNED_APK','/mnt/data/BLOODSKY-Craft107-experimental-unsigned.apk'))
+APK=pathlib.Path(os.environ.get('BLOODSKY_ORIGINAL_APK','/mnt/data/original.apk'))
+OUT=pathlib.Path(os.environ.get('BLOODSKY_UNSIGNED_APK','/mnt/data/BLOODSKY-experimental-unsigned.apk'))
 EXPECTED='11464db76f59393ccf698f57e60af1756756ffc78cb315d43052ae92adb50d4f'
 def u2(b,o): return struct.unpack_from('<H',b,o)[0]
 def u4(b,o): return struct.unpack_from('<I',b,o)[0]
@@ -121,7 +121,7 @@ def main():
    d=Dex(z.read(name))
    for c,n,s,_ in items:assert d.get(c,n,s),(c,n,s)
   assert z.testzip() is None
- pathlib.Path(os.environ.get('BLOODSKY_PATCH_LOG','/mnt/data/BLOODSKY_Craft107_dex_change_log.json')).write_text(json.dumps({'dex':report,'resources':other},indent=2),encoding='utf-8')
+ pathlib.Path(os.environ.get('BLOODSKY_PATCH_LOG','/mnt/data/BLOODSKY_dex_change_log.json')).write_text(json.dumps({'dex':report,'resources':other},indent=2),encoding='utf-8')
  from axml_inspect import pool
  with zipfile.ZipFile(OUT) as z:
   a=z.read('resources.arsc');assert pool(a,12).count('BLOODSKY')>=2

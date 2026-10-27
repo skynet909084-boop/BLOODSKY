@@ -1,5 +1,5 @@
 import struct,zipfile,os
-APK=os.environ.get('BLOODSKY_ORIGINAL_APK','/mnt/data/KaScada Smart Craft 1.0.7 (08.02.2026)(1).apk')
+APK=os.environ.get('BLOODSKY_ORIGINAL_APK','/mnt/data/original.apk')
 def u16(b,p):return struct.unpack_from('<H',b,p)[0]
 def u32(b,p):return struct.unpack_from('<I',b,p)[0]
 def dec_len8(b,p):

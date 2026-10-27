@@ -97,7 +97,7 @@ def patch(data, target_ids):
 
 if __name__=='__main__':
  import zipfile
- with zipfile.ZipFile('/mnt/data/KaScada Smart Craft 1.0.7 (08.02.2026)(1).apk') as z:
+ with zipfile.ZipFile(__import__('os').environ['BLOODSKY_ORIGINAL_APK']) as z:
   for file,ids in {'res/layout/dialog_choose_import_source.xml':[0x7f09020a], 'res/layout/dialog_modbus_slave.xml':[0x7f0900d6],'res/layout/main_menu.xml':[0x7f0901f7]}.items():
    b,info=patch(z.read(file),ids)
    assert pool(b,8)

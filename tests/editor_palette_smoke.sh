@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Open the original HMI component palette on the active mbCanvas editor.
-# Source: KaScada 1.0.7 fragment_component_bar.xml (original component IDs).
+# Source: compatible base version 1.0.7 fragment_component_bar.xml (original component IDs).
 set -euo pipefail
 PACKAGE=ru.kascada.modbus
 OUT=out/emulator/component-palette

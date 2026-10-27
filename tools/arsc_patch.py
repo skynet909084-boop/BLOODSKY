@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Safe scoped Android resources.arsc changes for the decoded Craft 1.0.7 reference.
+"""Safe scoped Android resources.arsc changes for pinned Android HMI reference input.
 Rewrites string pool offsets, preserving all resource IDs, and shrinks chooseNewConnection from 4 to 3 values.
 """
 import struct
@@ -67,7 +67,7 @@ def patch(data):
         changed+=1
     q+=size
    assert q==len(pkg) and changed==2,changed
-   raw=bytes(pkg);report.append('Removed 4th KaScada Cloud item from chooseNewConnection array in 2 resource configurations')
+   raw=bytes(pkg);report.append('Removed deprecated cloud transport item from chooseNewConnection array in 2 resource configurations')
   parts.append(raw);p+=sz
  assert p==len(b)
  result=bytearray(table+b''.join(parts));struct.pack_into('<I',result,4,len(result))
@@ -75,6 +75,6 @@ def patch(data):
  return bytes(result),report
 if __name__=='__main__':
  import zipfile
- with zipfile.ZipFile('/mnt/data/KaScada Smart Craft 1.0.7 (08.02.2026)(1).apk') as z:
+ with zipfile.ZipFile(__import__('os').environ['BLOODSKY_ORIGINAL_APK']) as z:
   b,r=patch(z.read('resources.arsc'))
  print(len(b),r)

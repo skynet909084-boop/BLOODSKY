@@ -50,7 +50,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: BLOODSKY-Craft107-diagnostics
+          name: BLOODSKY-build-diagnostics
           if-no-files-found: warn
           path: |
             out/signature-check.txt
@@ -63,6 +63,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: BLOODSKY-Craft107-EXPERIMENTAL-QA
+          name: BLOODSKY-QA
           path: out/BLOODSKY-QA.apk
           retention-days: 3

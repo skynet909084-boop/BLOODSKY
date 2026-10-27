@@ -21,7 +21,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p out
-          gh run download 40553232969 --repo skynet909084-boop/BLOODSKY-Craft107 --name BLOODSKY-Craft107-EXPERIMENTAL-QA --dir out
+          gh api -H "Accept: application/vnd.github+json" repos/skynet909084-boop/BLOODSKY/actions/artifacts/12756117755/zip > out/pinned-qa.zip
+          unzip -qq out/pinned-qa.zip -d out
+          rm -f out/pinned-qa.zip
           echo 'ce69092ff99474629f4197b1f52dd43c2a43abdc27952c6e79fb7791f47eb31f  out/BLOODSKY-QA.apk' | sha256sum -c
           echo 'REUSING signed QA candidate from source commit 7bd0080; not a new build' > out/provenance.txt
       - name: Enable Linux KVM
@@ -38,6 +40,13 @@ jobs:
           disable-linux-hw-accel: false
           emulator-boot-timeout: 600
           script: bash tests/set_russian_locale.sh && bash tests/emulator_smoke.sh && bash tests/project_create_smoke.sh && bash tests/project_save_reopen_smoke.sh && bash tests/editor_palette_smoke.sh
+      - name: Refresh SHA-pinned BLOODSKY QA artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BLOODSKY-QA
+          path: out/BLOODSKY-QA.apk
+          retention-days: 90
       - name: Preserve complete HMI component palette diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,3 +57,4 @@ jobs:
           path: |
             out/provenance.txt
             out/emulator/
+
