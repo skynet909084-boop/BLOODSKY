@@ -14,7 +14,30 @@ adb wait-for-device
 for i in $(seq 1 90); do
   current="$(adb shell getprop persist.sys.locale 2>/dev/null | tr -d '\r' || true)"
   zygote="$(adb shell getprop init.svc.zygote 2>/dev/null | tr -d '\r' || true)"
-  if [ "$current" = ru-RU ] && [ "$zygote" = running ]; then break; fi
+  # zygote comes back before package manager; APK install must wait for the framework.
+  if [ "$current" = ru-RU ] && [ "$zygote" = running ] && adb shell cmd package list packages 2>/dev/null | grep -q '^package:android
+  sleep 2
+done
+current="$(adb shell getprop persist.sys.locale | tr -d '\r')"
+echo "Selected locale: $current" | tee out/emulator/selected-locale.txt
+test "$current" = ru-RU
+if ! adb shell cmd package list packages 2>/dev/null | grep -q '^package:android
+echo "PASS: Android system requested ru-RU; UI strings will be checked after app launch"
+; then break; fi
+  sleep 2
+done
+current="$(adb shell getprop persist.sys.locale | tr -d '\r')"
+echo "Selected locale: $current" | tee out/emulator/selected-locale.txt
+test "$current" = ru-RU
+adb shell am force-stop com.android.settings 2>/dev/null || true
+echo "PASS: Android system requested ru-RU; UI strings will be checked after app launch"
+; then
+  echo 'Package manager has not recovered after the locale restart' >&2
+  exit 1
+fi
+adb shell am force-stop com.android.settings 2>/dev/null || true
+echo "PASS: Android system requested ru-RU; UI strings will be checked after app launch"
+; then break; fi
   sleep 2
 done
 current="$(adb shell getprop persist.sys.locale | tr -d '\r')"
