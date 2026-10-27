@@ -17,7 +17,8 @@ jobs:
       - uses: android-actions/setup-android@v3
       - run: sdkmanager 'build-tools;35.0.0' 'platform-tools'
       - run: bash tools/fetch_pinned_original.sh
-      - run: bash tools/build_candidate.sh
+      - name: Build and verify source integrity
+        run: bash tools/build_candidate.sh
       - uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
@@ -33,5 +34,7 @@ jobs:
             out/BLOODSKY-QA.apk
             out/signature-check.txt
             out/sha256.txt
+            out/static-verification.json
+            out/patch-log.json
             out/emulator/
           retention-days: 3

@@ -7,6 +7,8 @@ cd "$ROOT"
 TOOLS="$ANDROID_HOME/build-tools/35.0.0"
 mkdir -p out
 export BLOODSKY_UNSIGNED_APK="$ROOT/out/unsigned.apk"
+export BLOODSKY_SIGNED_APK="$ROOT/out/BLOODSKY-QA.apk"
+export BLOODSKY_VERIFY_REPORT="$ROOT/out/static-verification.json"
 export BLOODSKY_PATCH_LOG="$ROOT/out/patch-log.json"
 python3 tools/dex_patch.py
 "$TOOLS/zipalign" -f -p 4 out/unsigned.apk out/aligned.apk
@@ -17,4 +19,5 @@ keytool -genkeypair -noprompt -alias qa -keyalg RSA -keysize 3072 -validity 7 -d
 "$TOOLS/apksigner" sign --ks "$TMP/key.p12" --ks-type PKCS12 --ks-key-alias qa --ks-pass "pass:$PASS" --key-pass "pass:$PASS" --v1-signing-enabled true --v2-signing-enabled true --v3-signing-enabled true --out out/BLOODSKY-QA.apk out/aligned.apk
 unset PASS
 "$TOOLS/apksigner" verify --verbose --print-certs out/BLOODSKY-QA.apk > out/signature-check.txt
+python3 tools/verify_bloodsky.py
 sha256sum out/BLOODSKY-QA.apk > out/sha256.txt
