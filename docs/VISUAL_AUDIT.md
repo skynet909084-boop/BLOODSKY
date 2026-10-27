@@ -13,3 +13,7 @@ The correction in [7bd0080](https://github.com/skynet909084-boop/BLOODSKY-Craft1
 ## Outstanding verification
 
 An exact-head visual rerun and functional Russian-project rerun were dispatched at commit `7bd0080`. Do **not** declare pixel-level parity until both pass. Additional screens, component/widget layouts, FBD and density/device variations require independent visual tests and cannot be inferred from main-menu agreement.
+
+## Exact-head visual acceptance — PASS
+
+[run 40553233451](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40553233451) at tested commit `7bd008001c8a6a450c911187578aa85b36050b0b` passed comparing original and patched APK in the same Android 11 ru-RU emulator, screenshot `1080×1920`. All six main-menu controls retained their original rectangle coordinates and visible text. Each of the six measured `average_channel_difference: 0.0` and `fraction_pixels_large_diff: 0.0`. Diff image is all black in those regions. Full report/screenshot files are in GitHub Actions artifact `BLOODSKY-menu-visual-compare`. This demonstrates pixel-for-pixel matching **only of the six native main-menu button rectangles**, excluding branded title, hidden license footer, and all other screens. Visual mismatch was corrected by retaining space with `visibility=invisible` instead of `gone`.

@@ -1,9 +1,9 @@
 {
-  "status": "experimental_QA_android11_ru_RU_create_save_reopen_passed_not_release_ready",
+  "status": "experimental_QA_android11_ru_RU_full_offline_and_pixel_exact_menu_passed_not_release_ready",
   "source_apk_sha256": "11464db76f59393ccf698f57e60af1756756ffc78cb315d43052ae92adb50d4f",
-  "verified_run_id": 40551320774,
-  "verified_commit": "721d5544ddbb2d51b6dcdd18beca85aeb3a19858",
-  "verified_qa_apk_sha256": "de3257a756f5d1b2a519f83ad63f6735e35733543ed2a26bf5b79520aced3ee4",
+  "verified_run_id": 40553232969,
+  "verified_commit": "7bd008001c8a6a450c911187578aa85b36050b0b",
+  "verified_qa_apk_sha256": "ce69092ff99474629f4197b1f52dd43c2a43abdc27952c6e79fb7791f47eb31f",
   "changed_original_entries": [
     "classes.dex",
     "classes2.dex",
@@ -15,15 +15,16 @@
   "patched_dex_methods": 15,
   "cloud_choices_removed_configs": 2,
   "hidden_ui_views": 3,
-  "android_runtime_test": "API 30 Russian ru-RU: offline signed install, 6 Russian home menu labels, no legacy license, local project create/save/list/reopen into localized mbCanvas editor; PASS",
+  "android_runtime_test": "PASS run 40553232969: ru-RU offline signed install, home menu translated, create/save/list/reopen local project into mbCanvas; API30",
   "signature_test": "apksigner verify passed for ephemeral QA v1/v2/v3; release signing not complete",
   "pending": [
-    "Projects with edited widgets/assets save/import/export roundtrip",
-    "Cloud no-vendor-network audit and old type-4 project fail-closed",
-    "FBD and full HMI widget semantic checks",
+    "Visual parity across editor widgets/FBD and other dialogs",
+    "Complex project import/export roundtrip",
+    "Verified no vendor cloud traffic and safe type-4 project handling",
     "Bluetooth/USB/WiFi/Modbus hardware acceptance",
-    "Newer Android API compatibility",
-    "Long-lived release signing key and release validation"
+    "Latest Android device smoke",
+    "Production-release certificate with user-controlled private key"
   ],
-  "localization": "Original compiled Russian resources retained; localization follows Android device ru-RU (not globally forced)."
+  "localization": "Original compiled Russian resources retained; localization follows Android device ru-RU (not globally forced).",
+  "visual_menu_test": "PASS run 40553233451: six original-vs-BLOODSKY menu buttons 0.0 average RGB channel difference; 0.0 fraction of changed pixels; exact same bounds on same emulator and locale"
 }
