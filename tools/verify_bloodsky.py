@@ -66,7 +66,8 @@ with zipfile.ZipFile(APK) as o, zipfile.ZipFile(signed) as z:
     if id_value==target:
      assert attribute_resource_ids==sorted(attribute_resource_ids),(path,"attributes out of Android resource ID order")
      assert 0x010100dc in attribute_resource_ids
-     assert visibility==2,(path,id_value,visibility)
+     expected_visibility=1 if target==0x7f0901f7 else 2
+     assert visibility==expected_visibility,(path,id_value,visibility)
      seen+=1
    off+=size
   assert off==len(data) and seen==1,path

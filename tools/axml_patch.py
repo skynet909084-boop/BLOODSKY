@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Insert sorted android:visibility=gone attributes into binary Android XML.
+"""Insert sorted android:visibility attributes into binary Android XML.
 Changes selected elements only; leaves unrelated layouts untouched.
 """
 import struct
@@ -40,7 +40,10 @@ def patch(data, target_ids):
    if rid in target_ids:
     assert not existing,(hex(rid),'already visibility')
     assert len(raw)==ext+astart+asz*acount,(hex(rid),'unexpected tail',len(raw),ext+astart+asz*acount)
-    attr=pack32(nsidx)+pack32(visidx)+pack32(0xffffffff)+pack16(8)+bytes([0,0x10])+pack32(2)
+    # Keep the license view's original layout footprint (INVISIBLE=1).
+    # Cloud-only controls must not take up space (GONE=2).
+    visibility=1 if rid==0x7f0901f7 else 2
+    attr=pack32(nsidx)+pack32(visidx)+pack32(0xffffffff)+pack16(8)+bytes([0,0x10])+pack32(visibility)
     assert len(attr)==20 and asz==20
     # Android binary XML attribute entries must be ordered by resource ID.
     # Appending visibility after layout attributes leaves it ignored on API 30.
@@ -58,7 +61,7 @@ def patch(data, target_ids):
      if old>insert_at:struct.pack_into('<H',obj,header_off,old+1)
     struct.pack_into('<H',obj,ext+12,acount+1)
     struct.pack_into('<I',obj,4,len(obj))
-    raw=bytes(obj); ids_seen.add(rid);report.append({'id':hex(rid),'element':strings[U32(raw,ext+4)],'new':'visibility=gone'})
+    raw=bytes(obj); ids_seen.add(rid);report.append({'id':hex(rid),'element':strings[U32(raw,ext+4)],'new':'visibility=invisible' if visibility==1 else 'visibility=gone'})
   new.append((typ,raw))
  assert ids_seen==set(target_ids),(sorted(map(hex,ids_seen)),sorted(map(hex,target_ids)))
  if need_new_string:
