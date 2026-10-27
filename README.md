@@ -17,6 +17,12 @@ Public Android modification project based on the user-authorized KaScada Smart C
 - Original decoded archive SHA-256: `92d12206bde746f5a76c89e0c3311119287b14bb26cdc8ca36d515e2fca01f7a`.
 - Android-verified, ephemeral QA-signed candidate SHA-256 at run 40546269289: `ef69277aed617f80b62b13b04d9e7dccc655711e997a04041ed034ec8d2c2424` (experimental, not a stable release).
 
+## Locale and appearance
+
+The original Russian translations are retained: the Android 11 UiAutomator dump in [QA run 40549513523](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40549513523) shows all six main-menu buttons in Russian when the device locale is `ru-RU`. The test was initially a false failure because labels render uppercase, and has been fixed with Unicode-aware UI checks. Language follows the device locale; this build does not force Russian on every device.
+
+A separate manual [visual-compare.yml](.github/workflows/visual-compare.yml) installs the untouched original and BLOODSKY on the same Android emulator, captures Russian menus, compares button bounds/labels/pixels, and saves differences. A green comparison only covers the six main-menu controls, **not** all widgets or screens.
+
 ## Security
 Never commit original licensed binaries, decoded proprietary archives, signing keys, passwords, API keys, devices' project secrets, or build artifacts. Never put secrets or original binaries in Git history. Experimental QA APKs are temporarily published only as GitHub Actions artifacts; they use short-lived, unique keys and cannot upgrade each other. Do not treat them as release packages. The certificate is different from the original; in-place updates of the original app will fail on signature mismatch. Back up projects before testing.
 
