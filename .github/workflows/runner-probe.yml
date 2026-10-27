@@ -1,0 +1,13 @@
+name: Runner availability probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check runner assignment
+        run: |
+          echo "GitHub runner is available."
+          uname -a
