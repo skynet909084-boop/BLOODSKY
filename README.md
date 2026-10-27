@@ -26,5 +26,9 @@ A separate manual [visual-compare.yml](.github/workflows/visual-compare.yml) ins
 ## Security
 Never commit original licensed binaries, decoded proprietary archives, signing keys, passwords, API keys, devices' project secrets, or build artifacts. Never put secrets or original binaries in Git history. Experimental QA APKs are temporarily published only as GitHub Actions artifacts; they use short-lived, unique keys and cannot upgrade each other. Do not treat them as release packages. The certificate is different from the original; in-place updates of the original app will fail on signature mismatch. Back up projects before testing.
 
+## Private original and temporary QA
+
+After the old `BLOODSKY-Android` repository was archived and made private, public Actions can no longer download the original vendor APK without authorization. Reproducible builds now require the `BLOODSKY_SOURCE_READ_TOKEN` GitHub Actions secret with read-only access to the old repository; details are in [docs/BUILD.md](docs/BUILD.md). Do not upload the original APK or tokens publicly. To continue emulator checks before that secret is configured, [qa-pinned-artifact.yml](.github/workflows/qa-pinned-artifact.yml) uses a **verified temporary QA APK** from prior green CI; its artifact expires October 30, 2026.
+
 ## Release criteria
 See [acceptance checklist](docs/ACCEPTANCE.md). No stable release until acceptance tests are actually performed.
