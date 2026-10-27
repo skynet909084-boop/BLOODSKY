@@ -1,0 +1,50 @@
+name: Emulator QA against pinned verified APK
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify-component-palette:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Retrieve exact previously verified BLOODSKY QA APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p out
+          gh run download 40553232969 --repo skynet909084-boop/BLOODSKY-Craft107 --name BLOODSKY-Craft107-EXPERIMENTAL-QA --dir out
+          echo 'ce69092ff99474629f4197b1f52dd43c2a43abdc27952c6e79fb7791f47eb31f  out/BLOODSKY-QA.apk' | sha256sum -c
+          echo 'REUSING signed QA candidate from source commit 7bd0080; not a new build' > out/provenance.txt
+      - name: Enable Linux KVM
+        run: |
+          test -c /dev/kvm
+          sudo chmod 666 /dev/kvm
+          test -w /dev/kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-linux-hw-accel: false
+          emulator-boot-timeout: 600
+          script: bash tests/set_russian_locale.sh && bash tests/emulator_smoke.sh && bash tests/project_create_smoke.sh && bash tests/project_save_reopen_smoke.sh && bash tests/editor_palette_smoke.sh
+      - name: Preserve complete HMI component palette diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BLOODSKY-pinned-APK-palette-QA
+          if-no-files-found: warn
+          retention-days: 7
+          path: |
+            out/provenance.txt
+            out/emulator/
