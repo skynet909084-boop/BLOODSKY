@@ -42,7 +42,7 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_2
-          script: bash tests/emulator_smoke.sh
+          script: bash tests/emulator_smoke.sh && bash tests/project_create_smoke.sh
       - name: Preserve diagnostics even if emulator fails
         if: always()
         uses: actions/upload-artifact@v4

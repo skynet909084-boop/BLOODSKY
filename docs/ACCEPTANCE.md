@@ -29,3 +29,7 @@ All workflows failed **before any step executed** on the private repository. Thi
 Repository Actions is enabled, `allowed_actions=all`, token permission read-only. Monthly billing usage was reported, but the account's spending cap/runner entitlement was not available through the API. Account owner should check GitHub Settings > Billing and licensing > Actions usage/spending limits and inspect the failed run banner; if account limits allow running, contact GitHub Support with the three run IDs.
 
 Until runner provisioning works (or a trusted self-hosted runner is configured), emulator acceptance and v2/v3 signing **are not passed**. The separate local fixed-input static check reproduced unsigned APK SHA-256 `2649230a43855cf97599ed0ed005f8a3679f280c64e4cf1792c75123629d8a5b`; it does not substitute for Android acceptance. Do not mark a release as ready.
+
+## Added project creation gate
+
+The QA emulator now navigates from the offline main menu through **Create a new project**, types a synthetic project name, confirms the dialog, and asserts entry to original `mbCanvas`. It captures UI, screenshots and AndroidRuntime errors. This is a smoke test only; actual save/reload/export/import, FBD behavior and hardware are not yet covered.
