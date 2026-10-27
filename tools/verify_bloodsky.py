@@ -40,7 +40,7 @@ with zipfile.ZipFile(APK) as o, zipfile.ZipFile(signed) as z:
    size=struct.unpack_from("<I",old.b,off+12)[0]
    assert size==struct.unpack_from("<I",new.b,off+12)[0]
    assert old.b[off:off+16+size*2]==new.b[off:off+16+size*2],key
- assert count==14
+ assert count==15
  assert pool(z.read("resources.arsc"),12).count("BLOODSKY")>=2
  for path,target in {
   "res/layout/main_menu.xml":0x7f0901f7,

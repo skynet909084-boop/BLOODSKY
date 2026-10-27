@@ -93,7 +93,8 @@ PATCHES={
  (C+'Utils/l;','f','()Z','true'),
  (C+'Utils/l;','k','()Z','true'),
  (C+'Utils/l;','l','()Z','true'),
- (C+'Utils/l;','p','(Ljava/lang/String;)Z','true')]}
+ (C+'Utils/l;','p','(Ljava/lang/String;)Z','true'),
+ (C+'Firebase/MyFirebaseMessagingService;','q','(Lcom/google/firebase/messaging/s0;)V','void')]}
 def main():
  assert hashlib.sha256(APK.read_bytes()).hexdigest()==EXPECTED
  OUT.parent.mkdir(parents=True,exist_ok=True)
