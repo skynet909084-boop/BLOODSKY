@@ -1,9 +1,9 @@
 {
-  "status": "experimental_QA_android11_main_menu_and_project_create_smokes_passed_not_release_ready",
+  "status": "experimental_QA_android11_offline_create_save_list_reopen_passed_not_release_ready",
   "source_apk_sha256": "11464db76f59393ccf698f57e60af1756756ffc78cb315d43052ae92adb50d4f",
-  "verified_run_id": 40544090316,
-  "verified_commit": "499eec2c93441d6af33c8f9efac62b557bac5e47",
-  "verified_qa_apk_sha256": "38899e7b60ecf050d7f3244c8520d596727808ef0f01e6c4d6aa2c35590117cd",
+  "verified_run_id": 40546269289,
+  "verified_commit": "f329cc3e67314b6679dc9d6f847fb2bbe33cf0fe",
+  "verified_qa_apk_sha256": "ef69277aed617f80b62b13b04d9e7dccc655711e997a04041ed034ec8d2c2424",
   "changed_original_entries": [
     "classes.dex",
     "classes2.dex",
@@ -15,14 +15,14 @@
   "patched_dex_methods": 15,
   "cloud_choices_removed_configs": 2,
   "hidden_ui_views": 3,
-  "android_runtime_test": "API30: signed install, cold offline launch, main menu without license label, create local project BLOODSKY_QA, mbCanvas editor opened; AndroidRuntime no fatal errors",
+  "android_runtime_test": "API 30: install offline, main menu without license, create project BLOODSKYQA, enter mbCanvas, save via original exit dialog, saved project list persists, reopen into mbCanvas; PASS",
   "signature_test": "apksigner verify passed for ephemeral QA v1/v2/v3; release signing not complete",
   "pending": [
-    "No KaScada Cloud network trace yet",
-    "Project save/reopen/import/export and media",
-    "FBD/widget behavior",
-    "USB/Bluetooth/WiFi hardware acceptance",
-    "Current Android API acceptance",
-    "Persistent release signing key"
+    "Projects with edited widgets/assets save/import/export roundtrip",
+    "Cloud no-vendor-network audit and old type-4 project fail-closed",
+    "FBD and full HMI widget semantic checks",
+    "Bluetooth/USB/WiFi/Modbus hardware acceptance",
+    "Newer Android API compatibility",
+    "Long-lived release signing key and release validation"
   ]
 }

@@ -37,3 +37,7 @@ The QA emulator now navigates from the offline main menu through **Create a new 
 ## Verified Android 11 editor navigation — 2026-10-27
 
 Exact-head successful run: [40544090316](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40544090316), commit `499eec2`. Confirmed source-pinned APK, v1/v2/v3 ephemeral QA signatures, offline home activity, absence of the old license banner, local project creation `BLOODSKY_QA`, and foreground `mbCanvas` landscape editor. Project screenshot and UI hierarchy are in `BLOODSKY-Craft107-diagnostics`; no app fatal exceptions in AndroidRuntime. This does **not** prove project persistence/import/export, complete license-free feature availability, or cloud traffic isolation.
+
+## Verified offline save/list/reopen — 2026-10-27
+
+On pinned original KaScada 1.0.7 (107) patched to BLOODSKY, Android 11 emulator [run 40546269289](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40546269289), commit `f329cc3e67314b6679dc9d6f847fb2bbe33cf0fe`, **PASS**: offline signed install, no legacy license label, created project `BLOODSKYQA`, opened `mbCanvas`, saved through original exit confirmation, found persisted project in project load list (16 screens, one network device), tapped project and reopened `mbCanvas` successfully. Captured saved-list hierarchy, emulator UI and screenshot; no reported AndroidRuntime fatal exceptions. QA APK hash `ef69277aed617f80b62b13b04d9e7dccc655711e997a04041ed034ec8d2c2424`. This is a single empty project persistence smoke and not a full editor/FBD/media roundtrip.
