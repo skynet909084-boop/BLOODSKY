@@ -51,6 +51,10 @@ if ! grep -q "$PACKAGE" out/emulator/ui.xml; then
   echo 'Main activity not visible after permissions' >&2
   exit 1
 fi
+if ! grep -q 'Создать новый проект' out/emulator/ui.xml; then
+  echo 'Russian localization missing: expected Создать новый проект on main menu' >&2
+  exit 1
+fi
 if grep -Eqi 'License:|Unlicensed' out/emulator/ui.xml; then
   echo 'Legacy license status is still visible in the main menu' >&2
   exit 1
