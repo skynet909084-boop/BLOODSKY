@@ -59,7 +59,7 @@ for rid in IDs:
     diff = ImageChops.difference(before, after)
     avg = sum(ImageStat.Stat(diff).mean) / 3
     peak = diff.convert("L").point(lambda x: 255 if x > 30 else 0)
-    percent = sum(peak.histogram()[1:]) / 255 / (diff.width * diff.height)
+    percent = peak.histogram()[255] / (diff.width * diff.height)
     diff_image.paste(diff, a)
     reports.append(dict(button=rid, average_channel_difference=round(avg, 3), fraction_pixels_large_diff=round(percent, 4), bounds=a))
 
