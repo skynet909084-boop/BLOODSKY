@@ -32,15 +32,23 @@ jobs:
           arch: x86_64
           profile: pixel_2
           script: bash tests/emulator_smoke.sh
-      - if: success()
+      - name: Preserve diagnostics even if emulator fails
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: BLOODSKY-Craft107-EXPERIMENTAL-QA
+          name: BLOODSKY-Craft107-diagnostics
+          if-no-files-found: warn
           path: |
-            out/BLOODSKY-QA.apk
             out/signature-check.txt
             out/sha256.txt
             out/static-verification.json
             out/patch-log.json
             out/emulator/
+          retention-days: 3
+      - name: Publish experimental QA binary only after smoke succeeds
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BLOODSKY-Craft107-EXPERIMENTAL-QA
+          path: out/BLOODSKY-QA.apk
           retention-days: 3
