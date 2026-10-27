@@ -22,7 +22,10 @@ jobs:
           SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -name sdkmanager -type f | sort -V | tail -n 1)"
           test -n "$SDKMANAGER"
           "$SDKMANAGER" --sdk_root="$ANDROID_HOME" --install 'build-tools;35.0.0' 'platform-tools'
-      - run: bash tools/fetch_pinned_original.sh
+      - name: Retrieve exact original from archived private repo
+        env:
+          BLOODSKY_SOURCE_READ_TOKEN: ${{ secrets.BLOODSKY_SOURCE_READ_TOKEN }}
+        run: bash tools/fetch_pinned_original.sh
       - name: Build and verify source integrity
         run: bash tools/build_candidate.sh
       - name: Enable Linux KVM acceleration
