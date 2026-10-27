@@ -28,5 +28,5 @@
   "localization": "Original compiled Russian resources retained; localization follows Android device ru-RU (not globally forced).",
   "visual_menu_test": "PASS run 40553233451: six original-vs-BLOODSKY menu buttons 0.0 average RGB channel difference; 0.0 fraction of changed pixels; exact same bounds on same emulator and locale",
   "hmi_component_palette": "PASS Android 11 ru-RU run 40555577752: original HMI component tab_switch/tab_button/tab_digital_setters/tab_text/tab_digital_indicator shown, no fatal exception",
-  "fbd_component_palette": "new source-backed runtime test on SHA-pinned candidate dispatched (not yet confirmed)"
+  "fbd_component_palette": "PASS run 40556295416: source-pinned verified QA APK Android 11 ru-RU, original HMI palette then switch_layout -> FBD palette tab_var/tab_fb_rs/tab_fb_timer; 30+ original logic UI component IDs present"
 }
