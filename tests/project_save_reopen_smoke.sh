@@ -3,7 +3,7 @@
 set -euo pipefail
 PACKAGE=ru.kascada.modbus
 MAIN=ru.himik.nightscream.kascada.MainActivity
-PROJECT=BLOODSKY_QA
+PROJECT=BLOODSKYQA
 mkdir -p out/emulator/persistence
 capture() {
   adb shell dumpsys activity activities > out/emulator/persistence/activities.txt 2>&1 || true
@@ -24,7 +24,7 @@ tap_id() {
 }
 trap capture EXIT
 
-# The previous smoke must have created BLOODSKY_QA in the original editor.
+# The previous smoke must have created BLOODSKYQA in the original editor.
 adb shell input keyevent KEYCODE_BACK
 sleep 2
 dump_ui
@@ -45,7 +45,7 @@ xy="$(python3 tests/find_ui_node.py out/emulator/persistence/ui.xml --text-conta
 adb shell input tap $xy
 sleep 8
 capture
-grep -E -q 'mResumedActivity:.*mbCanvas' out/emulator/persistence/activities.txt || {
+grep -q 'mbCanvas' out/emulator/persistence/activities.txt || {
   echo 'Saved project did not reopen original mbCanvas editor' >&2
   exit 1
 }

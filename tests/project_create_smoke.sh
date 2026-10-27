@@ -30,7 +30,7 @@ tap_node "$PACKAGE:id/bGoToCanvas" id
 sleep 2
 dump
 tap_node 'android.widget.EditText' class
-adb shell input text 'BLOODSKY_QA'
+adb shell input text 'BLOODSKYQA'
 adb shell input keyevent KEYCODE_BACK || true
 sleep 1
 dump
