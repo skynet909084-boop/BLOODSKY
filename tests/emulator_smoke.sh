@@ -20,8 +20,9 @@ trap collect_diagnostics EXIT
 
 adb wait-for-device
 adb shell getprop sys.boot_completed | grep -q 1
-adb install -r out/BLOODSKY-QA.apk | tee out/emulator/install.txt
+adb install -r -g out/BLOODSKY-QA.apk | tee out/emulator/install.txt
 adb shell pm path "$PACKAGE" | tee out/emulator/pm-path.txt
+adb shell pm grant "$PACKAGE" android.permission.READ_EXTERNAL_STORAGE || true
 adb shell svc wifi disable || true
 adb shell svc data disable || true
 adb shell am force-stop "$PACKAGE" || true
@@ -39,4 +40,19 @@ if grep -A 14 'FATAL EXCEPTION' out/emulator/early-runtime-errors.txt | grep -q 
   echo 'Fatal exception from BLOODSKY on emulator startup' >&2
   exit 1
 fi
-echo 'PASS: offline install and initial activity/process smoke; not full acceptance.'
+
+collect_diagnostics
+trap - EXIT
+if [ ! -s out/emulator/ui.xml ]; then
+  echo 'UI hierarchy capture failed' >&2
+  exit 1
+fi
+if ! grep -q "$PACKAGE" out/emulator/ui.xml; then
+  echo 'Main activity not visible after permissions' >&2
+  exit 1
+fi
+if grep -Eqi 'License:|Unlicensed' out/emulator/ui.xml; then
+  echo 'Legacy license status is still visible in the main menu' >&2
+  exit 1
+fi
+echo 'PASS: offline install and main menu without license label; not full acceptance.'

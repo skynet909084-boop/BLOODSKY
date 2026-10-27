@@ -47,20 +47,25 @@ with zipfile.ZipFile(APK) as o, zipfile.ZipFile(signed) as z:
   "res/layout/dialog_modbus_slave.xml":0x7f0900d6,
   "res/layout/dialog_choose_import_source.xml":0x7f09020a}.items():
   data=z.read(path);assert U16(data,0)==3 and U32(data,4)==len(data)
-  off=8;names=[];seen=0
+  off=8;names=[];resource_ids=[];seen=0
   while off<len(data):
    typ=U16(data,off);size=U32(data,off+4)
    assert size>0
    if typ==1:names=pool(data,off)
+   if typ==0x180:resource_ids=[U32(data,off+8+4*j) for j in range((size-8)//4)]
    if typ==0x102:
     a=off+16;start=U16(data,a+8);stride=U16(data,a+10);n=U16(data,a+12)
-    id_value=None;visibility=None
+    id_value=None;visibility=None;attribute_resource_ids=[]
     for i in range(n):
      at=a+start+i*stride
-     name=names[U32(data,at+4)]
+     idx=U32(data,at+4)
+     name=names[idx]
+     attribute_resource_ids.append(resource_ids[idx] if idx<len(resource_ids) else 0)
      if name=="id":id_value=U32(data,at+16)
      if name=="visibility":visibility=U32(data,at+16)
     if id_value==target:
+     assert attribute_resource_ids==sorted(attribute_resource_ids),(path,"attributes out of Android resource ID order")
+     assert 0x010100dc in attribute_resource_ids
      assert visibility==8,(path,id_value,visibility)
      seen+=1
    off+=size

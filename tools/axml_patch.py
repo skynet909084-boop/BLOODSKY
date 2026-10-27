@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Append android:visibility=gone to selected binary Android XML views by resource id.
+"""Insert sorted android:visibility=gone attributes into binary Android XML.
 Changes selected elements only; leaves unrelated layouts untouched.
 """
 import struct
@@ -24,6 +24,8 @@ def patch(data, target_ids):
  assert p==len(b) and strings is not None
  visidx = strings.index('visibility') if 'visibility' in strings else len(strings)
  nsidx=strings.index(ANDROID_NS)
+ resource_map=next(raw for typ,raw in parts if typ==0x180)
+ resource_count=(len(resource_map)-8)//4
  need_new_string=visidx==len(strings)
  new=[];ids_seen=set();report=[]
  for typ,raw in parts:
@@ -40,7 +42,20 @@ def patch(data, target_ids):
     assert len(raw)==ext+astart+asz*acount,(hex(rid),'unexpected tail',len(raw),ext+astart+asz*acount)
     attr=pack32(nsidx)+pack32(visidx)+pack32(0xffffffff)+pack16(8)+bytes([0,0x10])+pack32(8)
     assert len(attr)==20 and asz==20
-    obj=bytearray(raw+attr)
+    # Android binary XML attribute entries must be ordered by resource ID.
+    # Appending visibility after layout attributes leaves it ignored on API 30.
+    existing_ids=[]
+    for j in range(acount):
+     idx=U32(raw,ext+astart+asz*j+4)
+     existing_ids.append(U32(resource_map,8+idx*4) if idx<resource_count else 0)
+    assert existing_ids==sorted(existing_ids),(hex(rid),existing_ids)
+    insert_at=next((j for j,x in enumerate(existing_ids) if x>ANDROID_VISIBILITY_ID),acount)
+    insert_pos=ext+astart+asz*insert_at
+    obj=bytearray(raw[:insert_pos]+attr+raw[insert_pos:])
+    # idIndex/classIndex/styleIndex are 1-based indices into attributes.
+    for header_off in (ext+14,ext+16,ext+18):
+     old=U16(obj,header_off)
+     if old>insert_at:struct.pack_into('<H',obj,header_off,old+1)
     struct.pack_into('<H',obj,ext+12,acount+1)
     struct.pack_into('<I',obj,4,len(obj))
     raw=bytes(obj); ids_seen.add(rid);report.append({'id':hex(rid),'element':strings[U32(raw,ext+4)],'new':'visibility=gone'})
