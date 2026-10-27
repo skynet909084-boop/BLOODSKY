@@ -20,7 +20,7 @@ trap collect_diagnostics EXIT
 
 adb wait-for-device
 adb shell getprop sys.boot_completed | grep -q 1
-adb install -r -g out/BLOODSKY-QA.apk | tee out/emulator/install.txt
+adb install --no-incremental -r -g out/BLOODSKY-QA.apk | tee out/emulator/install.txt
 adb shell pm path "$PACKAGE" | tee out/emulator/pm-path.txt
 adb shell pm grant "$PACKAGE" android.permission.READ_EXTERNAL_STORAGE || true
 adb shell svc wifi disable || true
@@ -28,7 +28,30 @@ adb shell svc data disable || true
 adb shell am force-stop "$PACKAGE" || true
 adb logcat -c || true
 
-adb shell am start -W -n "$PACKAGE/$MAIN" | tee out/emulator/launch.txt
+# Locale framework restart and Android incremental installs can race package indexing.
+# Require resolver readiness before trying to launch the activity.
+resolved=''
+for attempt in $(seq 1 30); do
+  resolved="$(adb shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p "$PACKAGE" 2>/dev/null || true)"
+  if [[ "$resolved" == *"$MAIN"* ]]; then break; fi
+  sleep 2
+done
+printf '%s\n' "$resolved" | tee out/emulator/resolved-activity.txt
+if [[ "$resolved" != *"$MAIN"* ]]; then
+  echo 'Package Manager did not resolve BLOODSKY launch activity after install' >&2
+  exit 1
+fi
+for attempt in $(seq 1 6); do
+  if adb shell am start -W -n "$PACKAGE/$MAIN" > out/emulator/launch.txt 2>&1 &&
+    grep -q 'Status: ok' out/emulator/launch.txt; then break; fi
+  if [ "$attempt" -eq 6 ]; then
+    cat out/emulator/launch.txt >&2
+    echo 'Launch failed even after package readiness' >&2
+    exit 1
+  fi
+  sleep 3
+done
+cat out/emulator/launch.txt
 sleep 10
 adb shell pidof "$PACKAGE" | tee out/emulator/pid.txt
 test -s out/emulator/pid.txt
