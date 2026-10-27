@@ -41,3 +41,10 @@ Exact-head successful run: [40544090316](https://github.com/skynet909084-boop/BL
 ## Verified offline save/list/reopen — 2026-10-27
 
 On pinned original KaScada 1.0.7 (107) patched to BLOODSKY, Android 11 emulator [run 40546269289](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40546269289), commit `f329cc3e67314b6679dc9d6f847fb2bbe33cf0fe`, **PASS**: offline signed install, no legacy license label, created project `BLOODSKYQA`, opened `mbCanvas`, saved through original exit confirmation, found persisted project in project load list (16 screens, one network device), tapped project and reopened `mbCanvas` successfully. Captured saved-list hierarchy, emulator UI and screenshot; no reported AndroidRuntime fatal exceptions. QA APK hash `ef69277aed617f80b62b13b04d9e7dccc655711e997a04041ed034ec8d2c2424`. This is a single empty project persistence smoke and not a full editor/FBD/media roundtrip.
+
+
+## Russian UI baseline — 2026-10-27
+
+The source-pinned, QA-signed app **does display Russian** when the Android device locale is `ru-RU`. The UiAutomator hierarchy and screenshot collected on API 30 in [run 40549513523](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40549513523) show `СОЗДАТЬ НОВЫЙ ПРОЕКТ`, `ЗАГРУЗИТЬ ПРОЕКТ`, `УДАЛИТЬ ПРОЕКТ`, `ЭКСПОРТ ПРОЕКТА`, `ИМПОРТ ПРОЕКТА`, `ВЫХОД`. The run was marked failed **only because** the test searched for a mixed-case string and the original interface renders uppercase. This has been replaced by `tests/assert_russian_menu.py` which matches exact UI control resource IDs with Unicode casefold. No Russian resources had to be invented or replaced. Changing the TEST emulator's locale does not force Russian on user devices.
+
+**Important:** a later [run 40550421060](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40550421060) failed when `am start` raced the Package Manager after framework restart; its package manifest and launcher activity were present. The CI test now disables incremental install and waits for launcher resolution. Await exact-head acceptance before declaring all Russian editor and persistence screens passed.
