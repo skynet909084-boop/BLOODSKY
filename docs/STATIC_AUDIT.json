@@ -1,9 +1,9 @@
 {
-  "status": "experimental_QA_android_11_main_menu_smoke_passed_not_release_ready",
+  "status": "experimental_QA_android11_main_menu_and_project_create_smokes_passed_not_release_ready",
   "source_apk_sha256": "11464db76f59393ccf698f57e60af1756756ffc78cb315d43052ae92adb50d4f",
-  "verified_run_id": 40543366155,
-  "verified_commit": "49dfd0bdfc8b3ce431dc729b302b3bf2c920abf6",
-  "verified_qa_apk_sha256": "608bcc4e838afbce31f17a985df07dd509b374dbd935db62bceea87abafb1da8",
+  "verified_run_id": 40544090316,
+  "verified_commit": "499eec2c93441d6af33c8f9efac62b557bac5e47",
+  "verified_qa_apk_sha256": "38899e7b60ecf050d7f3244c8520d596727808ef0f01e6c4d6aa2c35590117cd",
   "changed_original_entries": [
     "classes.dex",
     "classes2.dex",
@@ -15,14 +15,14 @@
   "patched_dex_methods": 15,
   "cloud_choices_removed_configs": 2,
   "hidden_ui_views": 3,
-  "android_runtime_test": "API30: install, cold launch, permissions, main menu, no Unlicensed label PASS",
+  "android_runtime_test": "API30: signed install, cold offline launch, main menu without license label, create local project BLOODSKY_QA, mbCanvas editor opened; AndroidRuntime no fatal errors",
   "signature_test": "apksigner verify passed for ephemeral QA v1/v2/v3; release signing not complete",
   "pending": [
-    "full KaScada Cloud no-traffic audit",
-    "project persistence/import/export tests",
-    "FBD/widget tests",
+    "No KaScada Cloud network trace yet",
+    "Project save/reopen/import/export and media",
+    "FBD/widget behavior",
     "USB/Bluetooth/WiFi hardware acceptance",
-    "device acceptance",
-    "persistent release key signature"
+    "Current Android API acceptance",
+    "Persistent release signing key"
   ]
 }

@@ -33,3 +33,7 @@ Until runner provisioning works (or a trusted self-hosted runner is configured),
 ## Added project creation gate
 
 The QA emulator now navigates from the offline main menu through **Create a new project**, types a synthetic project name, confirms the dialog, and asserts entry to original `mbCanvas`. It captures UI, screenshots and AndroidRuntime errors. This is a smoke test only; actual save/reload/export/import, FBD behavior and hardware are not yet covered.
+
+## Verified Android 11 editor navigation — 2026-10-27
+
+Exact-head successful run: [40544090316](https://github.com/skynet909084-boop/BLOODSKY-Craft107/actions/runs/40544090316), commit `499eec2`. Confirmed source-pinned APK, v1/v2/v3 ephemeral QA signatures, offline home activity, absence of the old license banner, local project creation `BLOODSKY_QA`, and foreground `mbCanvas` landscape editor. Project screenshot and UI hierarchy are in `BLOODSKY-Craft107-diagnostics`; no app fatal exceptions in AndroidRuntime. This does **not** prove project persistence/import/export, complete license-free feature availability, or cloud traffic isolation.
