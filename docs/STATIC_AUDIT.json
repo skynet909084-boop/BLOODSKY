@@ -1,0 +1,20 @@
+{
+  "status": "experimental_not_tested_on_android",
+  "changed_original_entries": [
+    "classes.dex",
+    "classes2.dex",
+    "res/layout/dialog_choose_import_source.xml",
+    "res/layout/dialog_modbus_slave.xml",
+    "res/layout/main_menu.xml",
+    "resources.arsc"
+  ],
+  "untouched_original_entries": 4613,
+  "patched_dex_methods": 14,
+  "cloud_choices_removed_configs": 2,
+  "hidden_ui_views": 3,
+  "original_sha256": "11464db76f59393ccf698f57e60af1756756ffc78cb315d43052ae92adb50d4f",
+  "candidate_sha256": "08b4e42ba69e56de69650a753966ebcf4e21c97502760c981130bff22d67a357",
+  "verified_jarsigner_v1": true,
+  "android_runtime_test": "NOT RUN",
+  "v2v3_signed": false
+}
